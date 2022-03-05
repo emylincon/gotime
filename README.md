@@ -30,4 +30,6 @@ if err != nil {
 fmt.Println(time) //1970-01-01 00:00:00 +0000 UTC
 ```
 # Official Documentation
-![godoc](https://godoc.org/github.com/emylincon/golist?status.svg)
+<a style="text-decoration:none" href="https://godoc.org/github.com/emylincon/gotime" target="_blank">
+    <img src="https://godoc.org/github.com/emylincon/gotime?status.svg" alt="GoDoc" />
+</a>
