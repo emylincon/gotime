@@ -7,6 +7,14 @@ import (
 	"github.com/emylincon/gotime"
 )
 
+func getTimeZone(timeZone string) *time.Location {
+	timeLocation, err := time.LoadLocation(timeZone)
+	if err != nil {
+		return time.Local
+	}
+	return timeLocation
+}
+
 func Test(t *testing.T) {
 	testCases := []struct {
 		desc     string
@@ -24,9 +32,14 @@ func Test(t *testing.T) {
 			expected: time.Date(2012, time.Month(7), 12, 0, 0, 0, 0, time.UTC),
 		},
 		{
-			desc:     "01 January 1970 00:00:00 GMT, pattern3",
+			desc:     "01 January 1970 00:00:00 GMT, pattern3 1",
 			input:    "01 January 1970 00:00:00 GMT",
-			expected: time.Date(1970, time.Month(1), 1, 0, 0, 0, 0, time.UTC),
+			expected: time.Date(1970, time.Month(1), 1, 0, 0, 0, 0, getTimeZone("GMT")),
+		},
+		{
+			desc:     "01 January 1970 00:00:00 GMT, pattern3 2",
+			input:    "01 January 70 00:00 GMT",
+			expected: time.Date(1970, time.Month(1), 1, 0, 0, 0, 0, getTimeZone("GMT")),
 		},
 	}
 	for _, tC := range testCases {
@@ -35,7 +48,7 @@ func Test(t *testing.T) {
 			if err != nil {
 				t.Errorf("Error: %v", err)
 			}
-			if got != tC.expected {
+			if got.String() != tC.expected.String() {
 				t.Errorf("Error: got : %v != expected : %v", got, tC.expected)
 			}
 		})

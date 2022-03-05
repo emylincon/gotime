@@ -54,10 +54,11 @@ func getMonth(month string) time.Month {
 }
 
 func getTimeZone(timeZone string) *time.Location {
-	if timeZone == "GMT" {
-		return time.UTC
+	timeLocation, err := time.LoadLocation(timeZone)
+	if err != nil {
+		return time.Local
 	}
-	return time.Local
+	return timeLocation
 }
 
 func formatPattern1(stringTime string) (parsedTime time.Time, err error) {
@@ -99,7 +100,29 @@ func formatPattern3(stringTime string) (parsedTime time.Time, err error) {
 	year := getYear(arr[1])
 	month := getMonth(s[1])
 	timeZone := getTimeZone(s[len(s)-1])
+	seconds := 0
+	if len(arr) >= 5 {
+		seconds = arr[4]
+	}
 
-	return time.Date(year, month, arr[0], arr[2], arr[3], arr[4], 0, timeZone), nil
+	return time.Date(year, month, arr[0], arr[2], arr[3], seconds, 0, timeZone), nil
 
 }
+
+// func formatPattern4(stringTime string) (parsedTime time.Time, err error) {
+// 	s := regexp.MustCompile(`[[:space:]]`).Split(stringTime, 5)
+// 	list := golist.NewList([]string{s[0]})
+// 	list.Append(s[2])
+// 	timeStamp := strings.Split(s[3], ":")
+// 	list, _ = list.Add(golist.NewList(timeStamp))
+// 	arr, err := list.ConvertToSliceInt()
+// 	if err != nil {
+// 		return time.Time{}, err
+// 	}
+// 	year := getYear(arr[1])
+// 	month := getMonth(s[1])
+// 	timeZone := getTimeZone(s[len(s)-1])
+
+// 	return time.Date(year, month, arr[0], arr[2], arr[3], arr[4], 0, timeZone), nil
+
+// }
