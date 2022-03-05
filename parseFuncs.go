@@ -56,11 +56,17 @@ func getMonth(month string) time.Month {
 func getTimeZone(timeZone string) *time.Location {
 	timeLocation, err := time.LoadLocation(timeZone)
 	if err != nil {
-		return time.Local
+		return time.UTC
 	}
 	return timeLocation
 }
 
+func getTimeZoneInt(hour, minutes int) *time.Location {
+	secondsOfUTC := int((time.Duration(hour) * time.Hour).Seconds() + (time.Duration(minutes) * time.Minute).Seconds())
+	return time.FixedZone("UTC", secondsOfUTC)
+}
+
+// formatPattern1 2022/10/12, 2022-10-12, 2020 10 12
 func formatPattern1(stringTime string) (parsedTime time.Time, err error) {
 	s := regexp.MustCompile(`(-|/|[[:space:]])`).Split(stringTime, 3)
 	list := golist.NewList(s)
@@ -74,6 +80,7 @@ func formatPattern1(stringTime string) (parsedTime time.Time, err error) {
 
 }
 
+// formatPattern2 12/10/2022, 12-10-2022, 25 07 2016
 func formatPattern2(stringTime string) (parsedTime time.Time, err error) {
 	s := regexp.MustCompile(`(-|/|[[:space:]])`).Split(stringTime, 3)
 	list := golist.NewList(s)
@@ -87,6 +94,7 @@ func formatPattern2(stringTime string) (parsedTime time.Time, err error) {
 
 }
 
+// formatPattern3 01 Jan 1970 00:00:00 GMT, 02 Jan 06 15:04 MST
 func formatPattern3(stringTime string) (parsedTime time.Time, err error) {
 	s := regexp.MustCompile(`[[:space:]]`).Split(stringTime, 5)
 	timeZone := getTimeZone(s[len(s)-1])
@@ -111,6 +119,7 @@ func formatPattern3(stringTime string) (parsedTime time.Time, err error) {
 
 }
 
+// formatPattern4 2011-10-10T14:48:00, 2011-10-10T14:48:00 GMT
 func formatPattern4(stringTime string) (parsedTime time.Time, err error) {
 	s := regexp.MustCompile(`(-|/|[[:space:]])`).Split(stringTime, 4)
 	timeZone := getTimeZone(s[len(s)-1])
@@ -137,5 +146,28 @@ func formatPattern4(stringTime string) (parsedTime time.Time, err error) {
 	}
 
 	return time.Date(year, month, day, hour, minute, seconds, 0, timeZone), nil
+
+}
+
+// formatPattern5 2011-10-10T14:48:00.000+09:00
+func formatPattern5(stringTime string) (parsedTime time.Time, err error) {
+	s := regexp.MustCompile(`(T|-|/|[[:space:]]|:|\.|\+)`).Split(stringTime, 9)
+
+	list := golist.NewList(s)
+
+	arr, err := list.ConvertToSliceInt()
+	if err != nil {
+		return time.Time{}, err
+	}
+	year := getYear(arr[0])
+	month := time.Month(arr[1])
+	day := arr[2]
+	hour := arr[3]
+	minute := arr[4]
+	seconds := arr[5]
+	nseconds := arr[6]
+	timeZone := getTimeZoneInt(arr[7], arr[8])
+
+	return time.Date(year, month, day, hour, minute, seconds, nseconds, timeZone), nil
 
 }
