@@ -1,6 +1,7 @@
 package gotime
 
 import (
+	"fmt"
 	"regexp"
 	"strings"
 	"time"
@@ -151,7 +152,7 @@ func formatPattern4(stringTime string) (parsedTime time.Time, err error) {
 
 // formatPattern5 2011-10-10T14:48:00.000+09:00
 func formatPattern5(stringTime string) (parsedTime time.Time, err error) {
-	s := regexp.MustCompile(`(T|-|/|[[:space:]]|:|\.|\+)`).Split(stringTime, 9)
+	s := regexp.MustCompile(`(T|-|/|[[:space:]]|:|\.|\+)`).Split(stringTime, 10)
 
 	list := golist.NewList(s)
 
@@ -167,6 +168,36 @@ func formatPattern5(stringTime string) (parsedTime time.Time, err error) {
 	seconds := arr[5]
 	nseconds := arr[6]
 	timeZone := getTimeZoneInt(arr[7], arr[8])
+
+	return time.Date(year, month, day, hour, minute, seconds, nseconds, timeZone), nil
+
+}
+
+// formatPattern6 January 1, 1970 00:00:00 UTC, January 1, 09 00:00:00.00 GMT
+func formatPattern6(stringTime string) (parsedTime time.Time, err error) {
+	s := regexp.MustCompile(`(\.|[[:space:]]|:|(,[[:space:]]))`).Split(stringTime, 9)
+	month := getMonth(s[0])
+	timeZone := getTimeZone(s[len(s)-1])
+	list := golist.NewList(s[1 : len(s)-1])
+	fmt.Println(golist.NewList(s))
+
+	arr, err := list.ConvertToSliceInt()
+	if err != nil {
+		return time.Time{}, err
+	}
+	year := getYear(arr[1])
+
+	day := arr[0]
+	hour := arr[2]
+	minute := arr[3]
+	seconds := 0
+	nseconds := 0
+	if len(arr) >= 5 {
+		seconds = arr[4]
+	}
+	if len(arr) >= 6 {
+		nseconds = arr[5]
+	}
 
 	return time.Date(year, month, day, hour, minute, seconds, nseconds, timeZone), nil
 

@@ -31,6 +31,8 @@ const (
 	pattern4 = `[0-9]{2,4}(-|/|[[:space:]])[0-9]{1,2}(-|/|[[:space:]])[0-9]{1,2}T[0-9]{2}:[0-9]{2}(:[0-9]{2}){0,1}([[:space:]][A-Z]+){0,1}`
 	// 2011-10-10T14:48:00.000+09:00
 	pattern5 = `[0-9]{2,4}(-|/|[[:space:]])[0-9]{1,2}(-|/|[[:space:]])[0-9]{1,2}T[0-9]{2}:[0-9]{2}:[0-9]{2}\.[0-9]+\+[0-9]{2}:[0:9]{2}`
+	// January 1, 1970 00:00:00 UTC, January 1, 09 00:00:00.00 GMT
+	pattern6 = `[[:word:]]+ [0-9]{1,2}, [0-9]{2,4} [0-9]{2}:[0-9]{2}(:[0-9]{2}){0,1}(\.[0-9]+){0,1} [A-Z]+`
 )
 
 // Parse returns time.Time reprsentation of string
@@ -47,6 +49,8 @@ func Parse(input string) (parsedTime time.Time, err error) {
 		return formatPattern1(input)
 	case match(pattern3, input):
 		return formatPattern3(input)
+	case match(pattern6, input):
+		return formatPattern6(input)
 
 	}
 
