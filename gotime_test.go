@@ -107,10 +107,10 @@ func Test(t *testing.T) {
 		t.Run(tC.desc, func(t *testing.T) {
 			got, err := gotime.Parse(tC.input)
 			if err != nil {
-				t.Errorf("Error: %v", err)
+				t.Errorf("TestError: %v", err)
 			}
 			if got.String() != tC.expected.String() {
-				t.Errorf("Error: got : %v != expected : %v", got, tC.expected)
+				t.Errorf("TestFailed: got : %v != expected : %v", got, tC.expected)
 			}
 		})
 	}

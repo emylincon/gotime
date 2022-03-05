@@ -12,11 +12,13 @@ func Example() {
 		fmt.Println(err) // handle error
 	}
 	fmt.Println(time)
+
 	time, err = gotime.Parse("25 07 2016")
 	if err != nil {
 		fmt.Println(err) // handle error
 	}
 	fmt.Println(time)
+
 	time, err = gotime.Parse("01 January 1970 00:00:00 GMT")
 	if err != nil {
 		fmt.Println(err) // handle error

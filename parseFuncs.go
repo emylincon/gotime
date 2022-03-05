@@ -61,6 +61,7 @@ func getTimeZone(timeZone string) *time.Location {
 	return timeLocation
 }
 
+// getTimeZoneInt
 func getTimeZoneInt(hour, minutes int) *time.Location {
 	secondsOfUTC := int((time.Duration(hour) * time.Hour).Seconds() + (time.Duration(minutes) * time.Minute).Seconds())
 	return time.FixedZone("UTC", secondsOfUTC)
