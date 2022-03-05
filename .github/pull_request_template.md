@@ -15,7 +15,6 @@ closes #
 
 <!--
     Run through this checklist when submitting a PR.
-
     Each item should be ticked off by you or a reviewer before it gets merged.
     You can click on the checkbox to do this.
 -->
