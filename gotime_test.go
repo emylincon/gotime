@@ -15,6 +15,11 @@ func getTimeZone(timeZone string) *time.Location {
 	return timeLocation
 }
 
+func getTimeZoneInt(hour, minutes int) *time.Location {
+	secondsOfUTC := int((time.Duration(hour) * time.Hour).Seconds() + (time.Duration(minutes) * time.Minute).Seconds())
+	return time.FixedZone("UTC", secondsOfUTC)
+}
+
 func Test(t *testing.T) {
 	testCases := []struct {
 		desc     string
@@ -49,12 +54,17 @@ func Test(t *testing.T) {
 		{
 			desc:     "2011-10-10T14:48:00, pattern4 1",
 			input:    "2011-10-10T14:48:00",
-			expected: time.Date(2011, time.Month(10), 10, 14, 48, 0, 0, getTimeZone("00")),
+			expected: time.Date(2011, time.Month(10), 10, 14, 48, 0, 0, getTimeZone("UTC")),
 		},
 		{
 			desc:     "2011-10-10T14:48:00 GMT, pattern4 2",
 			input:    "2011-10-10T14:48:00 GMT",
 			expected: time.Date(2011, time.Month(10), 10, 14, 48, 0, 0, getTimeZone("GMT")),
+		},
+		{
+			desc:     "2011-10-10T14:48:00.000+09:00, pattern5",
+			input:    "2011-10-10T14:48:00.000+09:00",
+			expected: time.Date(2011, time.Month(10), 10, 14, 48, 0, 0, getTimeZoneInt(9, 0)),
 		},
 	}
 	for _, tC := range testCases {
