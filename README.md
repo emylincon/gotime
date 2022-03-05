@@ -1,5 +1,5 @@
 # gotime
-convert string to go time.time
+Convert string to go `time.time`
 
 
 ![GitHub release (latest SemVer)](https://img.shields.io/github/v/release/emylincon/gotime?sort=semver&style=for-the-badge)
