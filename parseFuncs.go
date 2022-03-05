@@ -1,7 +1,6 @@
 package gotime
 
 import (
-	"fmt"
 	"regexp"
 	"strings"
 	"time"
@@ -215,7 +214,6 @@ func formatPattern7(stringTime string) (parsedTime time.Time, err error) {
 
 	month := getMonth(s[2])
 	timeZone := getTimeZone(s[len(s)-1])
-	fmt.Println("here")
 
 	list := golist.NewList([]string{s[1]})
 	if match(`[A-Z]+`, s[len(s)-1]) {
@@ -243,6 +241,35 @@ func formatPattern7(stringTime string) (parsedTime time.Time, err error) {
 		}
 
 	}
+
+	return time.Date(year, month, day, hour, minute, seconds, nseconds, timeZone), nil
+
+}
+
+// formatPattern8 Mon Jan 2 15:04:05 MST 2006
+func formatPattern8(stringTime string) (parsedTime time.Time, err error) {
+	s := regexp.MustCompile(`(\.|[[:space:]]|:)`).Split(stringTime, 10)
+
+	month := getMonth(s[1])
+
+	timeZone := getTimeZone(s[6])
+
+	list := golist.NewList(s[2:6])
+	list.Append(s[7])
+
+	arr, err := list.ConvertToSliceInt()
+	if err != nil {
+		return time.Time{}, err
+	}
+
+	day := arr[0]
+
+	hour := arr[1]
+	minute := arr[2]
+
+	seconds := arr[3]
+	nseconds := 0
+	year := getYear(arr[4])
 
 	return time.Date(year, month, day, hour, minute, seconds, nseconds, timeZone), nil
 

@@ -1,7 +1,6 @@
 package gotime
 
 import (
-	"fmt"
 	"time"
 )
 
@@ -36,6 +35,8 @@ const (
 	pattern6 = `[[:word:]]+ [0-9]{1,2}, [0-9]{2,4}([[:space]][0-9]{2}:[0-9]{2}(:[0-9]{2}){0,1}(\.[0-9]+){0,1}([[:space]][A-Z]+){0,1}){0,1}`
 	// Wed, 09 Aug 1995 00:00:00 GMT or Wed, 09 Aug 1995 00:00:00
 	pattern7 = `[[:word:]]+, [0-9]{1,2} [[:word:]]+ [0-9]{2,4}([[:space]][0-9]{2}:[0-9]{2}(:[0-9]{2}){0,1}(\.[0-9]+){0,1}([[:space]][A-Z]+){0,1}){0,1}`
+	// Mon Jan 2 15:04:05 MST 2006
+	pattern8 = `^[[:word:]]+ [[:word:]]+ [0-9]{1,2} [0-9]{2}:[0-9]{2}:[0-9]{2} [A-Z]+ [0-9]{2,4}$`
 )
 
 // Parse returns time.Time reprsentation of string
@@ -52,12 +53,13 @@ func Parse(input string) (parsedTime time.Time, err error) {
 		return formatPattern1(input)
 	case match(pattern3, input):
 		return formatPattern3(input)
+	case match(pattern8, input):
+		return formatPattern8(input)
 	case match(pattern6, input):
 		return formatPattern6(input)
 	case match(pattern7, input):
 		return formatPattern7(input)
 
 	}
-	fmt.Println("none")
 	return
 }
