@@ -89,6 +89,8 @@ func formatPattern2(stringTime string) (parsedTime time.Time, err error) {
 
 func formatPattern3(stringTime string) (parsedTime time.Time, err error) {
 	s := regexp.MustCompile(`[[:space:]]`).Split(stringTime, 5)
+	timeZone := getTimeZone(s[len(s)-1])
+
 	list := golist.NewList([]string{s[0]})
 	list.Append(s[2])
 	timeStamp := strings.Split(s[3], ":")
@@ -99,7 +101,7 @@ func formatPattern3(stringTime string) (parsedTime time.Time, err error) {
 	}
 	year := getYear(arr[1])
 	month := getMonth(s[1])
-	timeZone := getTimeZone(s[len(s)-1])
+
 	seconds := 0
 	if len(arr) >= 5 {
 		seconds = arr[4]
@@ -109,20 +111,31 @@ func formatPattern3(stringTime string) (parsedTime time.Time, err error) {
 
 }
 
-// func formatPattern4(stringTime string) (parsedTime time.Time, err error) {
-// 	s := regexp.MustCompile(`[[:space:]]`).Split(stringTime, 5)
-// 	list := golist.NewList([]string{s[0]})
-// 	list.Append(s[2])
-// 	timeStamp := strings.Split(s[3], ":")
-// 	list, _ = list.Add(golist.NewList(timeStamp))
-// 	arr, err := list.ConvertToSliceInt()
-// 	if err != nil {
-// 		return time.Time{}, err
-// 	}
-// 	year := getYear(arr[1])
-// 	month := getMonth(s[1])
-// 	timeZone := getTimeZone(s[len(s)-1])
+func formatPattern4(stringTime string) (parsedTime time.Time, err error) {
+	s := regexp.MustCompile(`(-|/|[[:space:]])`).Split(stringTime, 4)
+	timeZone := getTimeZone(s[len(s)-1])
 
-// 	return time.Date(year, month, arr[0], arr[2], arr[3], arr[4], 0, timeZone), nil
+	list := golist.NewList(s[:2])
+	timeArr := strings.Split(s[2], "T")
+	list.Append(timeArr[0])
 
-// }
+	timeStamp := strings.Split(timeArr[1], ":")
+	list, _ = list.Add(golist.NewList(timeStamp))
+	arr, err := list.ConvertToSliceInt()
+	if err != nil {
+		return time.Time{}, err
+	}
+	year := getYear(arr[0])
+	month := time.Month(arr[1])
+	day := arr[2]
+	hour := arr[3]
+	minute := arr[4]
+
+	seconds := 0
+	if len(arr) >= 6 {
+		seconds = arr[5]
+	}
+
+	return time.Date(year, month, day, hour, minute, seconds, 0, timeZone), nil
+
+}

@@ -41,6 +41,21 @@ func Test(t *testing.T) {
 			input:    "01 January 70 00:00 GMT",
 			expected: time.Date(1970, time.Month(1), 1, 0, 0, 0, 0, getTimeZone("GMT")),
 		},
+		{
+			desc:     "02 Jan 06 15:04 MST, pattern3 3",
+			input:    "02 Jan 06 15:04 MST",
+			expected: time.Date(2006, time.Month(1), 2, 15, 4, 0, 0, getTimeZone("MST")),
+		},
+		{
+			desc:     "2011-10-10T14:48:00, pattern4 1",
+			input:    "2011-10-10T14:48:00",
+			expected: time.Date(2011, time.Month(10), 10, 14, 48, 0, 0, getTimeZone("00")),
+		},
+		{
+			desc:     "2011-10-10T14:48:00 GMT, pattern4 2",
+			input:    "2011-10-10T14:48:00 GMT",
+			expected: time.Date(2011, time.Month(10), 10, 14, 48, 0, 0, getTimeZone("GMT")),
+		},
 	}
 	for _, tC := range testCases {
 		t.Run(tC.desc, func(t *testing.T) {
