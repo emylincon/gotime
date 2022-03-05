@@ -23,6 +23,11 @@ func Test(t *testing.T) {
 			input:    "12 07 2012",
 			expected: time.Date(2012, time.Month(7), 12, 0, 0, 0, 0, time.UTC),
 		},
+		{
+			desc:     "01 January 1970 00:00:00 GMT, pattern3",
+			input:    "01 January 1970 00:00:00 GMT",
+			expected: time.Date(1970, time.Month(1), 1, 0, 0, 0, 0, time.UTC),
+		},
 	}
 	for _, tC := range testCases {
 		t.Run(tC.desc, func(t *testing.T) {
