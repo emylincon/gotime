@@ -27,7 +27,22 @@ time, err := gotime.Parse("01 January 1970 00:00:00 GMT")
 if err != nil {
     fmt.Println(err) // handle error
 }
-fmt.Println(time) //1970-01-01 00:00:00 +0000 UTC
+fmt.Println(time) //1970-01-01 00:00:00 +0000 GMT
+```
+
+* Group Examples
+```golang
+times := []string{"2011-10-10T14:48:00 GMT", "2011-10-10T14:48:00"}
+for _, v := range times {
+		fmt.Println(gotime.Parse(v))
+	}
+
+```
+`OUTPUT`
+```
+2011-10-10 14:48:00 +0000 GMT, nil
+2011-10-10 14:48:00 +0000 UTC, nil
+
 ```
 # Official Documentation
 <a style="text-decoration:none" href="https://godoc.org/github.com/emylincon/gotime" target="_blank">
