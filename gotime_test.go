@@ -86,8 +86,18 @@ func Test(t *testing.T) {
 			input:    "August 7, 2014",
 			expected: time.Date(2014, time.Month(8), 7, 0, 0, 0, 0, getTimeZone("UTC")),
 		},
+		{
+			desc:     "Wed, 09 Aug 1995 00:00:00 GMT, pattern7 1",
+			input:    "Wed, 09 Aug 1995 00:00:00 GMT",
+			expected: time.Date(1995, time.Month(8), 9, 0, 0, 0, 0, getTimeZone("GMT")),
+		},
+		{
+			desc:     "Wed, 09 Aug 1995 00:00:00, pattern7 2",
+			input:    "Wed, 09 Aug 1995 00:00:00",
+			expected: time.Date(1995, time.Month(8), 9, 0, 0, 0, 0, getTimeZone("UTC")),
+		},
 	}
-	// January 1, 1970 00:00:00 UTC, January 1, 09 00:00:00.00 GMT
+	// // Wed, 09 Aug 1995 00:00:00 GMT or Wed, 09 Aug 1995 00:00:00
 	for _, tC := range testCases {
 		t.Run(tC.desc, func(t *testing.T) {
 			got, err := gotime.Parse(tC.input)

@@ -1,6 +1,7 @@
 package gotime
 
 import (
+	"fmt"
 	"regexp"
 	"strings"
 	"time"
@@ -195,8 +196,45 @@ func formatPattern6(stringTime string) (parsedTime time.Time, err error) {
 	if len(arr) != 2 {
 		hour = arr[2]
 		minute = arr[3]
-		seconds = 0
-		nseconds = 0
+		if len(arr) >= 5 {
+			seconds = arr[4]
+		}
+		if len(arr) >= 6 {
+			nseconds = arr[5]
+		}
+
+	}
+
+	return time.Date(year, month, day, hour, minute, seconds, nseconds, timeZone), nil
+
+}
+
+// formatPattern7 Wed, 09 Aug 1995 00:00:00 GMT or Wed, 09 Aug 1995 00:00:00
+func formatPattern7(stringTime string) (parsedTime time.Time, err error) {
+	s := regexp.MustCompile(`(\.|[[:space:]]|:|(,[[:space:]]))`).Split(stringTime, 10)
+
+	month := getMonth(s[2])
+	timeZone := getTimeZone(s[len(s)-1])
+	fmt.Println("here")
+
+	list := golist.NewList([]string{s[1]})
+	if match(`[A-Z]+`, s[len(s)-1]) {
+		list.Extend(s[3 : len(s)-1])
+	} else {
+		list.Extend(s[3:])
+	}
+
+	arr, err := list.ConvertToSliceInt()
+	if err != nil {
+		return time.Time{}, err
+	}
+	year := getYear(arr[1])
+
+	day := arr[0]
+	var hour, minute, seconds, nseconds int
+	if len(arr) != 2 {
+		hour = arr[2]
+		minute = arr[3]
 		if len(arr) >= 5 {
 			seconds = arr[4]
 		}
