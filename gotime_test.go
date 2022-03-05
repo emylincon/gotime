@@ -37,7 +37,7 @@ func Test(t *testing.T) {
 			expected: time.Date(1970, time.Month(1), 1, 0, 0, 0, 0, getTimeZone("GMT")),
 		},
 		{
-			desc:     "01 January 1970 00:00:00 GMT, pattern3 2",
+			desc:     "01 January 70 00:00 GMT, pattern3 2",
 			input:    "01 January 70 00:00 GMT",
 			expected: time.Date(1970, time.Month(1), 1, 0, 0, 0, 0, getTimeZone("GMT")),
 		},
