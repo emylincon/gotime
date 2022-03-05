@@ -76,6 +76,16 @@ func Test(t *testing.T) {
 			input:    "January 1, 09 00:00:00.00 GMT",
 			expected: time.Date(2009, time.Month(1), 1, 0, 0, 0, 0, getTimeZone("GMT")),
 		},
+		{
+			desc:     "January 1, 1970 00:00:00, pattern6 3",
+			input:    "January 1, 1970 00:00:00",
+			expected: time.Date(1970, time.Month(1), 1, 0, 0, 0, 0, getTimeZone("UTC")),
+		},
+		{
+			desc:     "August 7, 2014, pattern6 4",
+			input:    "August 7, 2014",
+			expected: time.Date(2014, time.Month(8), 7, 0, 0, 0, 0, getTimeZone("UTC")),
+		},
 	}
 	// January 1, 1970 00:00:00 UTC, January 1, 09 00:00:00.00 GMT
 	for _, tC := range testCases {
