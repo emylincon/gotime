@@ -10,7 +10,7 @@ Convert string to go <code>time.time</code>
 
 
 ![GitHub release (latest SemVer)](https://img.shields.io/github/v/release/emylincon/gotime?sort=semver&style=for-the-badge)
-![GitHub Workflow Status](https://img.shields.io/github/workflow/status/emylincon/gotime/Go?style=for-the-badge)
+![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/emylincon/gotime/go.yml?branch=main&style=for-the-badge)
 ![GitHub](https://img.shields.io/github/license/emylincon/gotime?style=for-the-badge)
 ![Go Report Card](https://goreportcard.com/badge/github.com/emylincon/gotime?style=for-the-badge)
 [![pre-commit](https://img.shields.io/badge/pre--commit-enabled-brightgreen?logo=pre-commit&logoColor=white&style=for-the-badge)](https://github.com/pre-commit/pre-commit)
